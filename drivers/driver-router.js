@@ -2,27 +2,27 @@ const router = require('express').Router()
 const db = require('../data/dbConfig')
 const restricted = require('../auth/restricted-middleware')
 
-router.get('/users', async (req, res) => {
-    const users = await db('users')
-    res.status(200).json(users)
+router.get('/driver', async (req, res) => {
+    const driver = await db('driver')
+    res.status(200).json(driver)
 })
 
-router.post('/users', async (req, res) => {
+router.post('/driver', async (req, res) => {
     const { username, password } = req.body
 
     if (username && password) {
-        const result = await db('users').insert(req.body)
+        const result = await db('driver').insert(req.body)
         res.status(201).json(result)
     } else {
         res.status(422).json({ message: 'Come on dude! We are missing some info'})
     }
 })
 
-router.get('/users/:id', restricted, async (req, res) => {
+router.get('/driver/:id', restricted, async (req, res) => {
     const id = req.params.id
 
     try {
-        const result = await db('users').where({id})
+        const result = await db('driver').where({id})
         if (result) {
             res.status(200).json(result)
         } else {
@@ -33,19 +33,19 @@ router.get('/users/:id', restricted, async (req, res) => {
     }
 })
 
-router.delete('/users/:id', async (req, res) => {
+router.delete('/driver/:id', async (req, res) => {
     const id = req.params.id
-    const result = await db('users').where({id}).delete()
+    const result = await db('driver').where({id}).delete()
 
     res.status(200).json(result)
 })
 
-router.put('/users/:id', async (req, res) => {
+router.put('/driver/:id', async (req, res) => {
     const id = req.params.id  
     try {
         const { username, password } = req.body
         if (username && password) {
-            const updateInfo = await db('users').where({id}).update(req.body)
+            const updateInfo = await db('driver').where({id}).update(req.body)
             if (updateInfo) {
                 res.status(200).json(updateInfo)
             } else {

@@ -5,10 +5,12 @@ const helmet = require('helmet')
 const server = express()
 
 const usersRouter = require('../users/users-router')
+const driverRouter = require('../drivers/driver-router')
 const authRouther = require('../auth/auth-router')
 
 server.use(express.json(), helmet(), cors())
 server.use(usersRouter)
+server.use(driverRouter)
 server.use(authRouther)
 
 server.get('/', (req, res) => {
