@@ -1,5 +1,10 @@
 // Update with your config settings.
 
+require('dotenv').config()
+const pg = require('pg')
+pg.defaults.ssl = true
+
+
 const localConnection = {
   host: 'localhost',
   database: 'my_db',
@@ -44,12 +49,11 @@ module.exports = {
   production: {
     client: 'pg',
     connection: prodDBConnection,
-    pool: {
-      min: 2,
-      max: 10
-    },
     migrations: {
-      tableName: 'knex_migrations'
+      directory: './data/migrations'
+    },
+    seeds: {
+      directory: './data/seeds'
     }
   }
 
