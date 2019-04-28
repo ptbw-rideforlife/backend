@@ -2,8 +2,6 @@ const router = require('express').Router()
 const db = require('../data/dbConfig')
 const restricted = require('../auth/restricted-middleware')
 
-
-
 router.get('/users', async (req, res) => {
     const users = await db('users')
     res.status(200).json(users)

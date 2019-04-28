@@ -8,9 +8,9 @@ router.get('/driver', async (req, res) => {
 })
 
 router.post('/driver', async (req, res) => {
-    const { username, password } = req.body
+    const { phone, password } = req.body
 
-    if (username && password) {
+    if (phone && password) {
         const result = await db('driver').insert(req.body)
         res.status(201).json(result)
     } else {
