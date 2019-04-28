@@ -14,6 +14,8 @@ router.post('/register', async (req, res) => {
 
     if (result) {
         res.status(201).json(result)
+    } else {
+        res.status(500).json({ message: 'error broski'})
     }
 })
 

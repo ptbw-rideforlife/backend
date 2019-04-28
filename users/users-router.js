@@ -2,19 +2,21 @@ const router = require('express').Router()
 const db = require('../data/dbConfig')
 const restricted = require('../auth/restricted-middleware')
 
+
+
 router.get('/users', async (req, res) => {
     const users = await db('users')
     res.status(200).json(users)
 })
 
 router.post('/users', async (req, res) => {
-    const { username, password } = req.body
+    const { phone, password } = req.body
 
-    if (username && password) {
+    if (phone && password) {
         const result = await db('users').insert(req.body)
         res.status(201).json(result)
     } else {
-        res.status(422).json({ message: 'Come on dude! We are missing some info'})
+        res.status(422).json({ message: 'Come on dude! We are missing phone and password info'})
     }
 })
 
