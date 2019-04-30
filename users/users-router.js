@@ -8,9 +8,9 @@ router.get('/users', async (req, res) => {
 })
 
 router.post('/users', async (req, res) => {
-    const { phone, password } = req.body
+    const { phoneNumber, password } = req.body
 
-    if (phone && password) {
+    if (phoneNumber && password) {
         const result = await db('users').insert(req.body)
         res.status(201).json(result)
     } else {
@@ -43,8 +43,8 @@ router.delete('/users/:id', async (req, res) => {
 router.put('/users/:id', async (req, res) => {
     const id = req.params.id  
     try {
-        const { username, password } = req.body
-        if (username && password) {
+        const { phoneNumber, password } = req.body
+        if (phoneNumber && password) {
             const updateInfo = await db('users').where({id}).update(req.body)
             if (updateInfo) {
                 res.status(200).json(updateInfo)
