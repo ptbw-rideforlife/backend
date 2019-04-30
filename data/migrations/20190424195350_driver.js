@@ -1,13 +1,16 @@
 exports.up = function(knex, Promise) {
     return knex.schema.createTable('driver', tbl => {
         tbl.increments()
-        tbl.string('firstname', 255).notNullable()
-        tbl.string('lastname', 255).notNullable()
+        tbl.string('firstName', 225).notNullable()
+        tbl.string('lastName', 225).notNullable()
+        tbl.integer('phoneNumber', 9).notNullable().unique()
+        tbl.text('bio', 255)
+        tbl.integer('rides', 10)
+        tbl.integer('rating', 5)
+        tbl.integer('price', 125).notNullable()
         tbl.string('city', 125).notNullable()
-        tbl.integer('phone', 9).notNullable().unique()
-        tbl.string('password', 128).notNullable()
+        tbl.string('password', 128).notNullable()            
     })
-  
 };
 
 exports.down = function(knex, Promise) {
