@@ -2,8 +2,8 @@ const router = require('express').Router()
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 
-const jwtSecret = require('../config/secret').jwtSecret
-const db = require('../data/dbConfig')
+const jwtSecret = require('../../config/secret').jwtSecret
+const db = require('../../data/dbConfig')
 
 router.post('/register/users', async (req, res) => {
     let user = req.body
@@ -41,7 +41,7 @@ router.post('/login/users', async (req, res) => {
 
         if (user || bcrypt.compareSync(body.password, user.password)) {
             const token = generateToken(user)
-            res.status(200).json({ token, message: `Welcome young master ${user.firstName}` })
+            res.status(200).json({ token, message: `Welcome young master ${user.firstName}`, userID: user.id })
         } else {
             res.status(401).json({ message: 'Invalid Credentials' })
         }
@@ -54,11 +54,11 @@ router.post('/login/driver', async (req, res) => {
     let body = req.body
 
     if (body) {
-        const user = await db('driver').where({phoneNumber: body.phoneNumber}).first()
+        const driver = await db('driver').where({phoneNumber: body.phoneNumber}).first()
 
-        if (user || bcrypt.compareSync(body.password, user.password)) {
-            const token = generateToken(user)
-            res.status(200).json({ token, message: `Welcome young master ${user.firstName}`, userID: user.id })
+        if (driver || bcrypt.compareSync(body.password, driver.password)) {
+            const token = generateToken(driver)
+            res.status(200).json({ token, message: `Welcome young master ${driver.firstName}`, driverID: driver.id})
         } else {
             res.status(401).json({ message: 'Invalid Credentials' })
         }
@@ -70,7 +70,20 @@ router.post('/login/driver', async (req, res) => {
 function generateToken(user) {
     const payload = {
         subject: user.id,
-        firstname: user.firstname
+        firstName: user.firstName
+    }
+
+    const options = {
+        expiresIn: '1d'
+    }
+
+    return jwt.sign(payload, jwtSecret, options)
+}
+
+function generateToken(driver) {
+    const payload = {
+        subject: driver.id,
+        firstName: driver.firstName
     }
 
     const options = {

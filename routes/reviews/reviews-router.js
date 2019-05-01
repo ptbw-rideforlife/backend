@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const db = require('../data/dbConfig')
+const db = require('../../data/dbConfig')
 const restricted = require('../auth/restricted-middleware')
 
 router.get('/reviews', async (req, res) => {
@@ -10,7 +10,7 @@ router.get('/reviews', async (req, res) => {
 router.post('/reviews', restricted, async (req, res) => {
     const { userID, driverID, review } = req.body
 
-    if (userID && driverID && review && restricted) {
+    if (userID && driverID && review) {
         const result = await db('reviews').insert(req.body)
         res.status(201).json(result)
     } else {
@@ -43,8 +43,8 @@ router.delete('/reviews/:id', restricted, async (req, res) => {
 router.put('/reviews/:id', restricted, async (req, res) => {
     const id = req.params.id  
     try {
-        const { phoneNumber, password } = req.body
-        if (phoneNumber && password) {
+        const { userID, driverID, review } = req.body
+        if ( userID && driverID && review) {
             const updateInfo = await db('reviews').where({id}).update(req.body)
             if (updateInfo) {
                 res.status(200).json(updateInfo)

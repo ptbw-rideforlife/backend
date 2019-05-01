@@ -4,10 +4,10 @@ const helmet = require('helmet')
 
 const server = express()
 
-const usersRouter = require('../users/users-router')
-const driverRouter = require('../drivers/driver-router')
-const reviewsRouter = require('../reviews/reviews-router')
-const authRouther = require('../auth/auth-router')
+const usersRouter = require('../routes/users/users-router')
+const driverRouter = require('../routes/drivers/driver-router')
+const reviewsRouter = require('../routes/reviews/reviews-router')
+const authRouther = require('../routes/auth/auth-router')
 
 server.use(express.json(), helmet(), cors())
 server.use(usersRouter)
