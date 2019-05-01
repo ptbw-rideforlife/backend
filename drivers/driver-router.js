@@ -2,12 +2,12 @@ const router = require('express').Router()
 const db = require('../data/dbConfig')
 const restricted = require('../auth/restricted-middleware')
 
-router.get('/driver', async (req, res) => {
+router.get('/driver', restricted, async (req, res) => {
     const driver = await db('driver')
     res.status(200).json(driver)
 })
 
-router.post('/driver', async (req, res) => {
+router.post('/driver', restricted, async (req, res) => {
     const { phoneNumber, password } = req.body
 
     if (phoneNumber && password) {
@@ -33,14 +33,14 @@ router.get('/driver/:id', restricted, async (req, res) => {
     }
 })
 
-router.delete('/driver/:id', async (req, res) => {
+router.delete('/driver/:id', restricted, async (req, res) => {
     const id = req.params.id
     const result = await db('driver').where({id}).delete()
 
     res.status(200).json(result)
 })
 
-router.put('/driver/:id', async (req, res) => {
+router.put('/driver/:id', restricted, async (req, res) => {
     const id = req.params.id  
     try {
         const { phoneNumber, password } = req.body
