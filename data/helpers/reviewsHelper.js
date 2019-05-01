@@ -24,8 +24,8 @@ function addReview(data, userID) {
 }
 
 async function editReview(id, review, userID) {
-    const result = await getReviewByID(id)
-    if (result.driverID === userID) {
+    const id = await getReviewByID(id)
+    if (id.driverID === userID) {
         return db('reviews')
             .where({ id })
             .update({ review }, ['id'])

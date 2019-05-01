@@ -1,28 +1,28 @@
 const router = require('express').Router()
-const db = require('../data/dbConfig')
+const db = require('../../data/dbConfig')
 const restricted = require('../auth/restricted-middleware')
 
-router.get('/driver', restricted, async (req, res) => {
-    const driver = await db('driver')
-    res.status(200).json(driver)
+router.get('/users', restricted, async (req, res) => {
+    const users = await db('users')
+    res.status(200).json(users)
 })
 
-router.post('/driver', restricted, async (req, res) => {
+router.post('/users', restricted, async (req, res) => {
     const { phoneNumber, password } = req.body
 
     if (phoneNumber && password) {
-        const result = await db('driver').insert(req.body)
+        const result = await db('users').insert(req.body)
         res.status(201).json(result)
     } else {
-        res.status(422).json({ message: 'Come on dude! We are missing some info'})
+        res.status(422).json({ message: 'Come on dude! We are missing phone and password info'})
     }
 })
 
-router.get('/driver/:id', restricted, async (req, res) => {
+router.get('/users/:id', restricted, async (req, res) => {
     const id = req.params.id
 
     try {
-        const result = await db('driver').where({id})
+        const result = await db('users').where({id})
         if (result) {
             res.status(200).json(result)
         } else {
@@ -33,19 +33,19 @@ router.get('/driver/:id', restricted, async (req, res) => {
     }
 })
 
-router.delete('/driver/:id', restricted, async (req, res) => {
+router.delete('/users/:id', restricted, async (req, res) => {
     const id = req.params.id
-    const result = await db('driver').where({id}).delete()
+    const result = await db('users').where({id}).delete()
 
     res.status(200).json(result)
 })
 
-router.put('/driver/:id', restricted, async (req, res) => {
+router.put('/users/:id', restricted, async (req, res) => {
     const id = req.params.id  
     try {
         const { phoneNumber, password } = req.body
         if (phoneNumber && password) {
-            const updateInfo = await db('driver').where({id}).update(req.body)
+            const updateInfo = await db('users').where({id}).update(req.body)
             if (updateInfo) {
                 res.status(200).json(updateInfo)
             } else {
