@@ -4,7 +4,7 @@ exports.up = function(knex, Promise) {
         tbl.string('firstName', 225).notNullable()
         tbl.string('lastName', 225).notNullable()
         tbl.integer('phoneNumber', 9).notNullable().unique()
-        tbl.text('bio', 255)
+        tbl.text('bio')
         tbl.integer('rides', 10)
         tbl.integer('rating', 5)
         tbl.integer('price', 125).notNullable()

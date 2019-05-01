@@ -2,27 +2,27 @@ const router = require('express').Router()
 const db = require('../data/dbConfig')
 const restricted = require('../auth/restricted-middleware')
 
-router.get('/users', restricted, async (req, res) => {
-    const users = await db('users')
-    res.status(200).json(users)
+router.get('/reviews', async (req, res) => {
+    const reviews = await db('reviews')
+    res.status(200).json(reviews)
 })
 
-router.post('/users', restricted, async (req, res) => {
-    const { phoneNumber, password } = req.body
+router.post('/reviews', restricted, async (req, res) => {
+    const { userID, driverID, review } = req.body
 
-    if (phoneNumber && password) {
-        const result = await db('users').insert(req.body)
+    if (userID && driverID && review && restricted) {
+        const result = await db('reviews').insert(req.body)
         res.status(201).json(result)
     } else {
-        res.status(422).json({ message: 'Come on dude! We are missing phone and password info'})
+        res.status(422).json({ message: 'Come on dude! We are missing some info'})
     }
 })
 
-router.get('/users/:id', restricted, async (req, res) => {
+router.get('/reviews/:id', restricted, async (req, res) => {
     const id = req.params.id
 
     try {
-        const result = await db('users').where({id})
+        const result = await db('reviews').where({id})
         if (result) {
             res.status(200).json(result)
         } else {
@@ -33,19 +33,19 @@ router.get('/users/:id', restricted, async (req, res) => {
     }
 })
 
-router.delete('/users/:id', restricted, async (req, res) => {
+router.delete('/reviews/:id', restricted, async (req, res) => {
     const id = req.params.id
-    const result = await db('users').where({id}).delete()
+    const result = await db('reviews').where({id}).delete()
 
     res.status(200).json(result)
 })
 
-router.put('/users/:id', restricted, async (req, res) => {
+router.put('/reviews/:id', restricted, async (req, res) => {
     const id = req.params.id  
     try {
         const { phoneNumber, password } = req.body
         if (phoneNumber && password) {
-            const updateInfo = await db('users').where({id}).update(req.body)
+            const updateInfo = await db('reviews').where({id}).update(req.body)
             if (updateInfo) {
                 res.status(200).json(updateInfo)
             } else {

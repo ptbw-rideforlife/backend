@@ -37,11 +37,11 @@ router.post('/login/users', async (req, res) => {
     let body = req.body
 
     if (body) {
-        const user = await db('users').where({phone: body.phone}).first()
+        const user = await db('users').where({phoneNumber: body.phoneNumber}).first()
 
         if (user || bcrypt.compareSync(body.password, user.password)) {
             const token = generateToken(user)
-            res.status(200).json({ token, message: `Welcome young master ${user.firstname}` })
+            res.status(200).json({ token, message: `Welcome young master ${user.firstName}` })
         } else {
             res.status(401).json({ message: 'Invalid Credentials' })
         }
@@ -54,11 +54,11 @@ router.post('/login/driver', async (req, res) => {
     let body = req.body
 
     if (body) {
-        const user = await db('driver').where({phone: body.phone}).first()
+        const user = await db('driver').where({phoneNumber: body.phoneNumber}).first()
 
         if (user || bcrypt.compareSync(body.password, user.password)) {
             const token = generateToken(user)
-            res.status(200).json({ token, message: `Welcome young master ${user.firstname}` })
+            res.status(200).json({ token, message: `Welcome young master ${user.firstName}`, userID: user.id })
         } else {
             res.status(401).json({ message: 'Invalid Credentials' })
         }
