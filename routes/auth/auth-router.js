@@ -10,12 +10,17 @@ router.post('/register/users', async (req, res) => {
     const hash = bcrypt.hashSync(user.password, 12)
     user.password = hash
 
-    const result = await db('users').insert(user)
-
-    if (result) {
-        res.status(201).json(result)
+    const check = await db('users').where("phoneNumber", user.phoneNumber)
+    
+    if (check.length > 0) {
+        res.status(401).json({ message: 'phoneNumber already exist!'})
     } else {
-        res.status(500).json({ message: 'error broski'})
+        try {
+            const result = await db('users').insert(user)
+            res.status(201).json(result)   
+        } catch(error) {
+          res.status(500).json({ message: 'error in the database'})
+      }
     }
 })
 
@@ -23,6 +28,19 @@ router.post('/register/driver', async (req, res) => {
     let user = req.body
     const hash = bcrypt.hashSync(user.password, 12)
     user.password = hash
+
+    const check = await db('driver').where("phoneNumber", user.phoneNumber)
+
+    if (check.length > 0) {
+        res.status(401).json({ message: 'phoneNumber already exist!!!!!'})
+    } else {
+        try{
+            const result = await db('driver').insert(user)
+            res.status(201).json(result)
+        } catch(error) {
+            res.status(500).json({ message: 'error in database'})
+        }
+    }
 
     const result = await db('driver').insert(user)
 
