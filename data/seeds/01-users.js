@@ -9,16 +9,16 @@ exports.seed = function(knex, Promise) {
           id: 1, 
           firstName: 'Rebecca', 
           lastName: 'Ramos',
-          city: 'Kampala',
-          phoneNumber: '8884442345',
+          address: '1234 secure street, Kampala',
+          phoneNumber: 222444222,
           password: 'password123'         
         },
         {
           id: 2, 
           firstName: 'Sarah', 
           lastName: 'Tsang',
-          city: 'Kira',
-          phoneNumber: '8884449999',
+          address: '4321 secure street, Kira',
+          phoneNumber: 555444999,
           password: 'password123'         
         },
       ]);
